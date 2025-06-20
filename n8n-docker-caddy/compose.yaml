@@ -1,7 +1,7 @@
 
 services:
   caddy:
-    container_name: caddy
+    container_name: caddy_${NODE_ENV}
     image: caddy:latest
     restart: unless-stopped
     ports:
@@ -13,7 +13,7 @@ services:
       - ${DATA_FOLDER}/caddy_config/Caddyfile:/etc/caddy/Caddyfile
 
   postgres:
-    container_name: postgres
+    container_name: postgres_${NODE_ENV}
     image: postgres:latest
     restart: always
     environment:
@@ -30,7 +30,7 @@ services:
       retries: 10
 
   n8n:
-    container_name: n8n
+    container_name: n8n_${NODE_ENV}
     image: docker.n8n.io/n8nio/n8n
     restart: always
     environment:
@@ -90,6 +90,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       - ${DATA_FOLDER}/local_files:/files
+      - ${DATA_FOLDER}/binary_data:/binaryData
     depends_on:
       postgres:
         condition: service_healthy
